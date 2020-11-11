@@ -52,7 +52,7 @@ luxNode::sensorConfiguration() {
 
 void
 luxNode::sensorData() {
-    double lux = _lux.getLux();
+    float lux = _lux.getLux();
     _sensorStatus = _lux.getError();
     if (_sensorStatus == 0) {
         _luxAverage =  _luxAverage + (lux - _luxAverage) / ++_Navg;

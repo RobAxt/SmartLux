@@ -16,7 +16,7 @@ class luxNode : public HomieNode {
 
     private:
         Max44009 _lux;
-        double _luxAverage;
+        float _luxAverage;
         int _sensorStatus;
         int _Navg;
         unsigned long _lastMeasurement;
