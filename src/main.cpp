@@ -3,7 +3,7 @@
 #include "luxNode.hpp"
 
 #define FW_NAME "smart-lux"
-#define FW_VERSION "0.0.0" 
+#define FW_VERSION "0.0.1" 
 
 /* Magic sequence for Autodetectable Binary Upload */
 const char *__FLAGGED_FW_NAME = "\xbf\x84\xe4\x13\x54" FW_NAME "\x93\x44\x6b\xa7\x75";
@@ -29,7 +29,19 @@ void setup() {
   //Homie.setSetupFunction([](){});
   //Homie.setLoopFunction([](){});
   //Homie.setBroadcastHandler([](const String& level, const String& value){});
-  //Homie.onEvent([](HomieEvent& event){});
+  Homie.onEvent([](const HomieEvent& event){
+    switch(event.type) {
+      case HomieEventType::WIFI_CONNECTED:
+        Homie.getLogger() << F("  ◦ Last HW Reset Reason: ") << ESP.getResetReason() << endl;
+      break;
+      case HomieEventType::SENDING_STATISTICS:
+        Homie.getLogger() << F("  ◦ Free Heap Size: ") << ESP.getFreeHeap()  << endl;
+        Homie.getLogger() << F("  ◦ Max Free Contiguous Block Size: ") << ESP.getMaxFreeBlockSize() << endl;
+        Homie.getLogger() << F("  ◦ Fragmentation: ") << ESP.getHeapFragmentation() << "%" << endl;
+        Homie.getLogger() << F("  ◦ Last HW Reset Reason: ") << ESP.getResetReason() << endl;
+      break;
+    }
+  });
   Homie.setup();
 }
 

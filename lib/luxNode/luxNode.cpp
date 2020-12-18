@@ -44,7 +44,7 @@ luxNode::sensorConfiguration() {
     int TIM = (conf & 0x07);
     int integrationTime = _lux.getIntegrationTime();
 
-    Homie.getLogger() << F("⁕ Sensor Configuration... ") << endl; 
+    Homie.getLogger() << F("⚙ Sensor Configuration... ") << endl; 
     Homie.getLogger() << F("  ◦ CDR: ") << CDR << endl;
     Homie.getLogger() << F("  ◦ TIM: ") << TIM << endl;
     Homie.getLogger() << F("  ◦ Integration Time: ") << integrationTime << " ms" << endl;
