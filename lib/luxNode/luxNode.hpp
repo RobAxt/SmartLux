@@ -20,7 +20,8 @@ class luxNode : public HomieNode {
         int _sensorStatus;
         int _Navg;
         unsigned long _lastMeasurement;
+        unsigned long _lastSended;
         void sensorConfiguration();
-        void sensorData();
+        void sensorDataAverage();
 };
 #endif //luxNode_hpp

@@ -21,9 +21,15 @@ luxNode::setup() {
 void
 luxNode::loop() {
     if (millis() - _lastMeasurement >=  1000UL) {
-        sensorData();
+        sensorDataAverage();
         _lastMeasurement = millis();
     }
+    if (millis() - _lastSended >=  60000UL) {
+        setProperty("lux").send(String(_luxAverage, 3).c_str());
+        Homie.getLogger() << F("  ◦ Average Lux: ") << _luxAverage << " lux" << endl;
+        sensorConfiguration();
+        _lastSended = millis();
+    }        
 }
 
 void
@@ -51,18 +57,12 @@ luxNode::sensorConfiguration() {
 }
 
 void
-luxNode::sensorData() {
+luxNode::sensorDataAverage() {
     float lux = _lux.getLux();
     _sensorStatus = _lux.getError();
     if (_sensorStatus == 0) {
-        _luxAverage =  _luxAverage + (lux - _luxAverage) / ++_Navg;
-        if (_Navg == 60) {
-            _Navg = 0;
-            setProperty("lux").send(String(_luxAverage, 3).c_str());
-            Homie.getLogger() << F("  ◦ Current Lux: ") << lux << " lux" << endl;
-            Homie.getLogger() << F("  ◦ Average Lux: ") << _luxAverage << " lux" << endl;
-            sensorConfiguration();
-        }
+        _luxAverage =  _luxAverage + (lux - _luxAverage) / (_Navg == 60 ? _Navg : ++_Navg);
+        Homie.getLogger() << F("  ◦ Current Lux: ") << lux << " lux and Navg:" << _Navg << endl;
     } else {
         Homie.getLogger() << F("  ◦ Sensor Status: ") << _sensorStatus << endl;
     }
