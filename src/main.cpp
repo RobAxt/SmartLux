@@ -40,6 +40,8 @@ void setup() {
         Homie.getLogger() << F("  ◦ Fragmentation: ") << ESP.getHeapFragmentation() << "%" << endl;
         Homie.getLogger() << F("  ◦ Last HW Reset Reason: ") << ESP.getResetReason() << endl;
       break;
+      default:
+      break;
     }
   });
   Homie.setup();
